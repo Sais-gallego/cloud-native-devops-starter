@@ -1,0 +1,25 @@
+name: Cloud Native CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Kubernetes Manifests
+        run: |
+          echo "Validating k8s manifests..."
+          test -f k8s/deployment.yaml
+          test -f k8s/ingress.yaml
+          test -f k8s/networkpolicy.yaml
+      - name: Validate Dockerfiles
+        run: |
+          echo "Validating Docker configs..."
+          test -f docker/Dockerfile.nodejs
+          test -f docker/Dockerfile.python
+          test -f docker/docker-compose.yml
